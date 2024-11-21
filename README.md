@@ -1,2 +1,19 @@
 # aws-multi-region
+
 Hello world demo of multi-region AWS deployment with Python CDK, testing with RobotFW
+
+## Requirements for environment
+
+Pip needs to be installed
+Python 3 needs to be installed
+
+## Prepare CDK related things
+
+    cd infrastructure
+    pip install -r requirements.txt
+
+## Deploy stack
+
+   cdk bootstrap
+   cdk synth
+   cdk deploy
