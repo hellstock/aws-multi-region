@@ -1,8 +1,6 @@
-#!/usr/bin/env python3
-
-from aws_cdk import core as cdk
+from aws_cdk import App
 from hush_api_lambda_stack import HushApiLambdaStack
 
-app = cdk.App()
+app = App()
 HushApiLambdaStack(app, "HushApiLambdaStack")
 app.synth()

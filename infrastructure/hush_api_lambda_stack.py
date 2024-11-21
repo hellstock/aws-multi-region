@@ -1,11 +1,16 @@
+import os
+
 from aws_cdk import (
-    core as cdk,
+    Stack,
     aws_lambda as _lambda,
     aws_apigateway as apigw
 )
+from constructs import Construct
+from aws_cdk import CfnOutput
 
-class HushApiLambdaStack(cdk.Stack):
-    def __init__(self, scope: cdk.Construct, id: str, **kwargs) -> None:
+
+class HushApiLambdaStack(Stack):
+    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         lambda_function = _lambda.Function(
@@ -13,7 +18,7 @@ class HushApiLambdaStack(cdk.Stack):
             "HelloLambdaFunction",
             runtime=_lambda.Runtime.PYTHON_3_8,
             handler="lambda_function.handler",
-            code=_lambda.Code.from_asset("lambda"),
+            code=_lambda.Code.from_asset(os.path.join("..", "backend", "lambda")),
         )
 
         api = apigw.LambdaRestApi(
@@ -24,7 +29,7 @@ class HushApiLambdaStack(cdk.Stack):
         )
 
         # Output the API Gateway endpoint URL
-        cdk.CfnOutput(
+        CfnOutput(
             self,
             "ApiEndpoint",
             value=api.url,
