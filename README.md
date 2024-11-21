@@ -17,6 +17,7 @@ Python 3 needs to be installed
 
     cd infrastructure
     source .venv/bin/activate
+    aws configure
 
 
 ## Deploy stack
@@ -24,6 +25,10 @@ Python 3 needs to be installed
    cdk bootstrap
    cdk synth
    cdk deploy
+
+## Troubleshooting
+
+    cdk bootstrap -v
 
 
 ## Limitations
