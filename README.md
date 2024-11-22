@@ -17,7 +17,7 @@ Python 3 needs to be installed
 
 Create role "cdk-role" etc. to be used. Add "Maximum session duration" to 12h for convenience.
 
-Add role ARN HUSH_CDK_ROLE environment variable, here we assume `.env_hush` file.
+Add role ARN HUSH_CDK_ROLE environment variable.here we assume `.env_hush` file.
 
 Assume role to get temporary credentials.
 
@@ -66,9 +66,10 @@ Above should return the role you were defining.
 
 ### Preparation
 
-You need to add API GW base URL to HUSH_APIGW_URL environment variable. For example add to `.env-tests` file:
+You need to add API GW base URL and AWS region to environment variables. For example add to `.env-tests` file:
 
     export HUSH_APIGW_URL=https://<your-api-gw-url-here>/prod
+    export HUSH_AWS_REGION=<your-region-here>
 
 For test running with python unit test framework, prepare this:
 
