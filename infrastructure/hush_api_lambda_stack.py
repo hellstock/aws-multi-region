@@ -1,12 +1,24 @@
 import os
 
 from aws_cdk import (
+    Aspects,
+    IAspect,
     Stack,
+    aws_logs as logs,
     aws_lambda as _lambda,
     aws_apigateway as apigw
 )
 from constructs import Construct
-from aws_cdk import CfnOutput
+import jsii
+
+@jsii.implements(IAspect)
+class LogRetentionAspect:
+    def __init__(self, retention: logs.RetentionDays):
+        self.retention = retention
+
+    def visit(self, node: Construct):
+        if isinstance(node, logs.CfnLogGroup):
+            node.add_property_override("RetentionInDays", self.retention.value)
 
 
 class HushApiLambdaStack(Stack):
@@ -34,3 +46,5 @@ class HushApiLambdaStack(Stack):
             "GET",
             apigw.LambdaIntegration(lambda_function)
         )
+
+        Aspects.of(self).add(LogRetentionAspect(logs.RetentionDays.ONE_MONTH))
