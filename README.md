@@ -35,16 +35,17 @@ Test credentials by running:
 
 Above should return the role you were defining.
 
-## Use Pyhton virtual environment
+## Use Python virtual environment
 
     cd infrastructure
+    python3 -m venv .venv
     source .venv/bin/activate
 
 ## Deploy stack
 
    cdk bootstrap
    cdk synth
-   cdk deploy --require-approval everything
+   cdk deploy --require-approval any-change
 
 ## Iterating
 
@@ -60,6 +61,14 @@ Above should return the role you were defining.
 ## Troubleshooting
 
     cdk bootstrap -v
+
+## Running tests
+
+    cd tests/rest-api
+    python3 -m venv venv
+    source venv/bin/activate
+    python3 -m pip install -r requirements.txt
+    python3 -m unittest api-test.py
 
 ## Limitations
 
