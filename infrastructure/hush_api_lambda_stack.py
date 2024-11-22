@@ -21,17 +21,16 @@ class HushApiLambdaStack(Stack):
             code=_lambda.Code.from_asset(os.path.join("..", "backend", "lambda")),
         )
 
-        api = apigw.LambdaRestApi(
+        api = apigw.RestApi(
             self,
-            "HushApiGateway",
-            handler=lambda_function,
-            proxy=True
+            "HushApi",
+            rest_api_name="Hush API service",
+            description="An API Gateway for the Hush service."
         )
 
-        # Output the API Gateway endpoint URL
-        CfnOutput(
-            self,
-            "ApiEndpoint",
-            value=api.url,
-            description="The API Gateway endpoint for the Lambda function"
+        hello_resource = api.root.add_resource("hello")
+
+        hello_resource.add_method(
+            "GET",
+            apigw.LambdaIntegration(lambda_function)
         )

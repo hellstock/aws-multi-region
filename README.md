@@ -35,16 +35,17 @@ Test credentials by running:
 
 Above should return the role you were defining.
 
-## Use Pyhton virtual environment
+## Use Python virtual environment
 
     cd infrastructure
+    python3 -m venv .venv
     source .venv/bin/activate
 
 ## Deploy stack
 
    cdk bootstrap
    cdk synth
-   cdk deploy --require-approval everything
+   cdk deploy --require-approval any-change
 
 ## Iterating
 
@@ -60,6 +61,26 @@ Above should return the role you were defining.
 ## Troubleshooting
 
     cdk bootstrap -v
+
+## Running tests
+
+### Preparation
+
+You need to add API GW base URL to HUSH_APIGW_URL environment variable. For example add to `.env-tests` file:
+
+    export HUSH_APIGW_URL=https://<your-api-gw-url-here>/prod
+
+For test running with python unit test framework, prepare this:
+
+    cd tests/rest-api
+    python3 -m venv venv
+    source venv/bin/activate
+    python3 -m pip install -r requirements.txt
+
+### Running API tests
+
+    cd tests/rest-api
+    python3 -m unittest api-test.py
 
 ## Limitations
 
