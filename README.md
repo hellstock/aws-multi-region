@@ -13,23 +13,41 @@ Python 3 needs to be installed
     pip install -r requirements.txt
     npm install -g aws-cdk
 
-## Use virtual environment
+## Prepare AWS Account
+
+Create role "cdk-role" etc. to be used.
+
+Add role ARN HUSH_CDK_ROLE environment variable
+
+Assume role to get temporary credentials.
+
+   cd infrastructure
+   ./assume-role.sh
+
+Configure AWS CLI with credentials and region
+
+    aws configure
+
+Test credentials by running:
+
+    aws sts get-caller-identity
+
+Above should return the role you were defining.
+
+## Use Pyhton virtual environment
 
     cd infrastructure
     source .venv/bin/activate
-    aws configure
-
 
 ## Deploy stack
 
    cdk bootstrap
    cdk synth
-   cdk deploy
+   cdk deploy --require-approval everything
 
 ## Troubleshooting
 
     cdk bootstrap -v
-
 
 ## Limitations
 
