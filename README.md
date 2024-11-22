@@ -15,7 +15,7 @@ Python 3 needs to be installed
 
 ## Prepare AWS Account
 
-Create role "cdk-role" etc. to be used.
+Create role "cdk-role" etc. to be used. Add "Maximum session duration" to 12h for convenience.
 
 Add role ARN HUSH_CDK_ROLE environment variable, here we assume `.env_hush` file.
 

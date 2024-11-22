@@ -12,7 +12,7 @@ unset AWS_SESSION_TOKEN
 ROLE_ARN="$HUSH_CDK_ROLE"
 SESSION_NAME="CDKRoleSession"
 
-CREDS=$(aws sts assume-role --role-arn $ROLE_ARN --role-session-name $SESSION_NAME)
+CREDS=$(aws sts assume-role --role-arn $ROLE_ARN --role-session-name $SESSION_NAME --duration-seconds 43200)
 
 if [ $? -ne 0 ] || [ -z "$CREDS" ]; then
   echo "Error: Failed to assume role. Check AWS CLI configuration and permissions."
