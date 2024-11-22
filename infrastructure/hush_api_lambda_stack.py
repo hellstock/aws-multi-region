@@ -17,7 +17,7 @@ class HushApiLambdaStack(Stack):
             self,
             "HelloLambdaFunction",
             runtime=_lambda.Runtime.PYTHON_3_8,
-            handler="lambda_function.handler",
+            handler="lambda_hello.handler",
             code=_lambda.Code.from_asset(os.path.join("..", "backend", "lambda")),
         )
 

@@ -5,6 +5,10 @@ if [ -z "$HUSH_CDK_ROLE" ]; then
   exit 1
 fi
 
+unset AWS_ACCESS_KEY_ID
+unset AWS_SECRET_ACCESS_KEY
+unset AWS_SESSION_TOKEN
+
 ROLE_ARN="$HUSH_CDK_ROLE"
 SESSION_NAME="CDKRoleSession"
 
