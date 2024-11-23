@@ -5,6 +5,7 @@ from datetime import datetime
 
 # This does not need to be actual working e-mail in our set-up
 BASE_EMAIL = "user@hush.com"
+TEMPORARY_PASSWORD = "SecurePassword123!"
 
 class TestCognito(unittest.TestCase):
 
@@ -13,6 +14,10 @@ class TestCognito(unittest.TestCase):
         if not self.user_pool:
             self.fail("Environment variable 'HUSH_USER_POOL_ID' is not set.")
 
+        self.user_pool_client_id = os.getenv("HUSH_USER_POOL_CLIENT_ID")
+        if not self.user_pool_client_id:
+            self.fail("Environment variable 'HUSH_USER_POOL_CLIENT_ID' is not set.")
+
         self.region = self.user_pool.split('_')[0]
 
     def create_new_email_alias(self, base_email):
@@ -20,6 +25,18 @@ class TestCognito(unittest.TestCase):
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
         unique_email = f"{local_part}+{timestamp}@{domain}"
         return unique_email
+
+    def sign_up_user(self, client, user_pool_client_id, email, password):
+        response = client.sign_up(
+            ClientId=user_pool_client_id,
+            Username=email,
+            Password=password,
+            UserAttributes=[
+                {"Name": "email", "Value": email},
+            ]
+        )
+
+        return response
 
     def test_admin_create_user(self):
         email = self.create_new_email_alias(BASE_EMAIL)
@@ -32,7 +49,7 @@ class TestCognito(unittest.TestCase):
                 {"Name": "email", "Value": email},
                 {"Name": "email_verified", "Value": "true"}
             ],
-            TemporaryPassword="TempPassword123!",
+            TemporaryPassword=TEMPORARY_PASSWORD,
             MessageAction="SUPPRESS"
         )
 
@@ -50,3 +67,19 @@ class TestCognito(unittest.TestCase):
         )
 
         # print("User created:", response)
+
+    def test_user_sign_up(self):
+        user_pool_client_id = self.user_pool_client_id
+        email = self.create_new_email_alias(BASE_EMAIL)
+        password = TEMPORARY_PASSWORD
+
+        client = boto3.client("cognito-idp")
+
+        try:
+            response = self.sign_up_user(client, user_pool_client_id, email, password)
+            print("User signed up successfully!")
+            print(response)
+        except client.exceptions.UsernameExistsException:
+            print("User already exists.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
