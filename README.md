@@ -83,6 +83,10 @@ For test running with python unit test framework, prepare this:
     cd tests/rest-api
     python3 -m unittest api-test.py
 
+Run only one test case with
+
+    python3 -m unittest cognito-test.py -k test_user_sign_up
+
 ## Limitations
 
 Has been tested in Frankfurt (eu-central-1)
