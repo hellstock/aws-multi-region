@@ -1,8 +1,9 @@
 from aws_cdk import (
     Stack,
-    Construct,
     aws_cognito as cognito
 )
+from constructs import Construct
+
 
 class HushCognitoStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs):
