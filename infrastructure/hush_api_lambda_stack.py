@@ -54,7 +54,7 @@ class HushApiLambdaStack(Stack):
             apigw.LambdaIntegration(lambda_function_hello)
         )
 
-        hello_authenticated_resource = api.root.add_resource("helloauthenticated")
+        hello_authenticated_resource = v1_resource.add_resource("helloauthenticated")
         hello_authenticated_resource.add_method(
             "GET",
             apigw.LambdaIntegration(lambda_function_hello_authenticated),
