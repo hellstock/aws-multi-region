@@ -11,6 +11,14 @@ class TestAuhtenticatedApiEndpoint(unittest.TestCase):
             self.fail("Environment variable 'HUSH_APIGW_URL' is not set.")
         self.base_url = self.base_url + '/v1'
 
+        self.user_pool = os.getenv("HUSH_USER_POOL_ID")
+        if not self.user_pool:
+            self.fail("Environment variable 'HUSH_USER_POOL_ID' is not set.")
+
+        self.user_pool_client_id = os.getenv("HUSH_USER_POOL_CLIENT_ID")
+        if not self.user_pool_client_id:
+            self.fail("Environment variable 'HUSH_USER_POOL_CLIENT_ID' is not set.")
+
         self.test_user_username = os.getenv("HUSH_TEST_USER_USERNAME")
         if not self.test_user_username:
             self.fail("Environment variable 'HUSH_TEST_USER_USERNAME' is not set.")
