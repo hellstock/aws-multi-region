@@ -42,7 +42,7 @@ class TestApiEndpoint(unittest.TestCase):
         endpoint = f"{self.base_url}/notrealendpoint"
         response = requests.get(endpoint)
 
-        # ApiGw returns 403
+        # ApiGw returns 403 for endpoints that don't exist
         self.assertEqual(response.status_code, 403, f"Expected 403 but got {response.status_code}")
 
 if __name__ == "__main__":
