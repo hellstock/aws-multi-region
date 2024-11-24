@@ -8,6 +8,7 @@ class TestApiEndpoint(unittest.TestCase):
         self.base_url = os.getenv("HUSH_APIGW_URL")
         if not self.base_url:
             self.fail("Environment variable 'HUSH_APIGW_URL' is not set.")
+        self.base_url = self.base_url + '/v1'
 
         self.aws_reqion = os.getenv("HUSH_AWS_REGION")
         if not self.aws_reqion:
