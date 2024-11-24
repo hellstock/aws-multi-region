@@ -36,7 +36,7 @@ class TestApiEndpoint(unittest.TestCase):
         endpoint = f"{self.base_url}/helloauthenticated"
         response = requests.get(endpoint)
 
-        self.assertEqual(response.status_code, 403, f"Expected 403 but got {response.status_code}")
+        self.assertEqual(response.status_code, 401, f"Expected 401 but got {response.status_code}")
 
     def test_missing_endpoint(self):
         endpoint = f"{self.base_url}/notrealendpoint"
