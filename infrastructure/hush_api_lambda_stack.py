@@ -33,6 +33,16 @@ class HushApiLambdaStack(Stack):
             code=_lambda.Code.from_asset(lambdas_path),
         )
 
+        lambda_function_store_match =  _lambda.Function(
+            self, "TournamentStoreMatch",
+            runtime=runtime_version,
+            handler="lambda_match_store.handler",
+            code=_lambda.Code.from_asset(lambdas_path),
+        )
+        lambda_function_store_match.add_environment(
+            "DYNAMO_TABLE_NAME", dynamo_stack.table.table_name)
+        dynamo_stack.table.grant_read_write_data(lambda_function_store_match)
+
         lambda_function_tournament_results = _lambda.Function(
             self, "TournamentGetResults",
             runtime=runtime_version,
@@ -43,8 +53,6 @@ class HushApiLambdaStack(Stack):
             "DYNAMO_TABLE_NAME", dynamo_stack.table.table_name)
 
         dynamo_stack.table.grant_read_data(lambda_function_tournament_results)
-
-        # table.grant_read_write_data(lambda_function)
 
         api = apigw.RestApi(
             self,
@@ -76,6 +84,15 @@ class HushApiLambdaStack(Stack):
         )
 
         tournaments_resource = v1_resource.add_resource("tournament")
+
+        match_post_resource = tournaments_resource.add_resource("match")
+        match_post_resource.add_method(
+            "POST",
+            apigw.LambdaIntegration(lambda_function_store_match),
+            authorization_type=apigw.AuthorizationType.COGNITO,
+            authorizer=authorizer
+        )
+
         tournament_resource = tournaments_resource.add_resource("{tournamentId}")
         results_resource = tournament_resource.add_resource("results")
         results_resource.add_method(
