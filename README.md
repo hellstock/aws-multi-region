@@ -81,11 +81,11 @@ For test running with python unit test framework, prepare this:
 ### Running API tests
 
     cd tests/rest-api
-    python3 -m unittest api-test.py
+    python3 -m unittest api_test.py
 
 Run only one test case with
 
-    python3 -m unittest cognito-test.py -k test_user_sign_up
+    python3 -m unittest cognito_test.py -k test_user_sign_up
 
 ## Limitations
 
