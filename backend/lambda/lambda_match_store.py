@@ -1,7 +1,6 @@
 import boto3
 import os
 import json
-from datetime import datetime
 
 dynamodb = boto3.resource("dynamodb")
 table_name = os.environ["DYNAMO_TABLE_NAME"]
@@ -30,8 +29,7 @@ def handler(event, context):
         "SK": f"MATCH#{match_id}",
         "Player1": player1,
         "Player2": player2,
-        "Score": score,
-        "Timestamp": datetime.utcnow().isoformat(),
+        "Score": score
     }
 
     print(f'Storing to Dynamo: {item}')
