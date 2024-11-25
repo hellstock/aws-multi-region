@@ -10,11 +10,13 @@ class HushDynamoDbStack(Stack):
     def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
+        self.table_name = "HushSingleTable"
+
         # Create DynamoDB for sigle table design and on-demand provisioning
         self.table = dynamodb.Table(
             self,
-            "HushSingleTable",
-            table_name="HushSingleTable",
+            self.table_name,
+            table_name=self.table_name,
             partition_key=dynamodb.Attribute(
                 name="PK",
                 type=dynamodb.AttributeType.STRING,

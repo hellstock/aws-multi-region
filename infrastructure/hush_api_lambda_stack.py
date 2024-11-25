@@ -11,7 +11,7 @@ from aws_cdk import CfnOutput
 
 
 class HushApiLambdaStack(Stack):
-    def __init__(self, scope: Construct, id: str, cognito_stack: Stack, **kwargs) -> None:
+    def __init__(self, scope: Construct, id: str, cognito_stack: Stack, dynamo_stack: Stack, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         # Having same runtime for all lambdas makes deployment faster
@@ -33,12 +33,14 @@ class HushApiLambdaStack(Stack):
             code=_lambda.Code.from_asset(lambdas_path),
         )
 
-        lambda_function_tournament_get_results = _lambda.Function(
+        lambda_function_tournament_results = _lambda.Function(
             self, "TournamentGetResults",
             runtime=runtime_version,
             handler="lambda_tournament_get_results.handler",
             code=_lambda.Code.from_asset(lambdas_path),
         )
+        lambda_function_tournament_results.add_environment(
+            "DYNAMO_TABLE_NAME", dynamo_stack.table.table_name)
 
         api = apigw.RestApi(
             self,
@@ -74,5 +76,5 @@ class HushApiLambdaStack(Stack):
         results_resource = tournament_resource.add_resource("results")
         results_resource.add_method(
             "GET",
-            apigw.LambdaIntegration(lambda_function_tournament_get_results)
+            apigw.LambdaIntegration(lambda_function_tournament_results)
         )
