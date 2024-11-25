@@ -20,10 +20,12 @@ class TestCognito(unittest.TestCase):
 
         self.region = self.user_pool.split('_')[0]
 
-    def create_new_email_alias(self, base_email):
+    # The postfix parameter is used to distinguish aliases created on same second when
+    # all test cases are run. Otherwise later cases fail with "user already exists"
+    def create_new_email_alias(self, base_email,postfix=""):
         local_part, domain = base_email.split("@")
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        unique_email = f"{local_part}+{timestamp}@{domain}"
+        unique_email = f"{local_part}+{timestamp}{postfix}@{domain}"
         return unique_email
 
     def sign_up_user(self, client, user_pool_client_id, email, password):
@@ -39,7 +41,7 @@ class TestCognito(unittest.TestCase):
         return response
 
     def test_admin_create_user(self):
-        email = self.create_new_email_alias(BASE_EMAIL)
+        email = self.create_new_email_alias(BASE_EMAIL, "a")
         client = boto3.client('cognito-idp', region_name=self.region)
 
         response = client.admin_create_user(
@@ -66,20 +68,18 @@ class TestCognito(unittest.TestCase):
             f"Expected email {email}, but got {email_attribute['Value']}"
         )
 
-        # print("User created:", response)
-
     def test_user_sign_up(self):
         user_pool_client_id = self.user_pool_client_id
-        email = self.create_new_email_alias(BASE_EMAIL)
+        email = self.create_new_email_alias(BASE_EMAIL, "s")
         password = TEMPORARY_PASSWORD
 
         client = boto3.client("cognito-idp")
 
         try:
             response = self.sign_up_user(client, user_pool_client_id, email, password)
-            print("User signed up successfully!")
-            print(response)
+            # print("User signed up successfully!")
+            # print(response)
         except client.exceptions.UsernameExistsException:
-            print("User already exists.")
+            self.fail("User already exists")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            self.fail(f"An error occurred: {e}")
