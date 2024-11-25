@@ -42,6 +42,10 @@ class HushApiLambdaStack(Stack):
         lambda_function_tournament_results.add_environment(
             "DYNAMO_TABLE_NAME", dynamo_stack.table.table_name)
 
+        dynamo_stack.table.grant_read_data(lambda_function_tournament_results)
+
+        # table.grant_read_write_data(lambda_function)
+
         api = apigw.RestApi(
             self,
             "HushApi",
