@@ -5,7 +5,7 @@ dynamodb = boto3.resource("dynamodb")
 table_name = os.environ["DYNAMO_TABLE_NAME"]
 table = dynamodb.Table(table_name)
 
-def get_results(event, context):
+def handler(event, context):
     tournament_id = event["pathParameters"].get("tournamentId")
 
     if not tournament_id:

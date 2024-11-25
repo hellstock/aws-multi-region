@@ -6,7 +6,7 @@ dynamodb = boto3.resource("dynamodb")
 table_name = os.environ["DYNAMO_TABLE_NAME"]
 table = dynamodb.Table(table_name)
 
-def save_result(event, context):
+def handler(event, context):
     tournament_id = event["tournament_id"]
     match_id = event["match_id"]
     player1 = event["player1"]
