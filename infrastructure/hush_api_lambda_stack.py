@@ -33,6 +33,13 @@ class HushApiLambdaStack(Stack):
             code=_lambda.Code.from_asset(lambdas_path),
         )
 
+        lambda_function_tournament_get_results = _lambda.Function(
+            self, "TournamentGetResults",
+            runtime=runtime_version,
+            handler="lambda_tournament_get_results.handler",
+            code=_lambda.Code.from_asset(lambdas_path),
+        )
+
         api = apigw.RestApi(
             self,
             "HushApi",
@@ -60,4 +67,12 @@ class HushApiLambdaStack(Stack):
             apigw.LambdaIntegration(lambda_function_hello_authenticated),
             authorization_type=apigw.AuthorizationType.COGNITO,
             authorizer=authorizer
+        )
+
+        tournaments_resource = v1_resource.add_resource("tournament")
+        tournament_resource = tournaments_resource.add_resource("{tournamentId}")
+        results_resource = tournament_resource.add_resource("results")
+        results_resource.add_method(
+            "GET",
+            apigw.LambdaIntegration(lambda_function_tournament_get_results)
         )
