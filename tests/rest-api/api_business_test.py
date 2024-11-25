@@ -21,7 +21,7 @@ class TestApiBusinessEndpoints(TestApiBase):
             "match_id": "A1",
             "player1": "Frank",
             "player2": "James",
-            "Score": "5,4,9",
+            "score": "5,4,9",
         }
         response = requests.post(endpoint, headers=headers, json=body)
 
