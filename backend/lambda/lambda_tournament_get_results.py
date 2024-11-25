@@ -14,8 +14,21 @@ def handler(event, context):
             "body": "Error: tournamentId is required in the path"
         }
 
+    print(f'Got request to get results of tournament: {tournament_id}')
+
     response = table.query(
         KeyConditionExpression=boto3.dynamodb.conditions.Key("PK").eq(f"TOURNAMENT#{tournament_id}")
     )
 
-    return {"results": response.get("Items", [])}
+    if not response["Items"]:
+        print('No results found for tournament, returning 404 to client')
+        return {
+            "statusCode": 404,
+            "body": f"Tournament with ID '{tournament_id}' not found."
+        }
+
+    response_items = response.get("Items", [])
+
+    print(f'Returning to client: {response_items}')
+
+    return {"results": response_items}
