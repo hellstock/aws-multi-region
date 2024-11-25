@@ -14,6 +14,7 @@ class HushDynamoDbStack(Stack):
         self.table = dynamodb.Table(
             self,
             "HushSingleTable",
+            table_name="HushSingleTable",
             partition_key=dynamodb.Attribute(
                 name="PK",
                 type=dynamodb.AttributeType.STRING,
