@@ -12,7 +12,7 @@ def handler(event, context):
     print(f'Incoming event: {event}')
 
     try:
-        body = json.loads(event["body"])  # Extract and parse the request body
+        body = json.loads(event["body"])
     except (KeyError, json.JSONDecodeError) as e:
         return {
             "statusCode": 400,
@@ -36,6 +36,13 @@ def handler(event, context):
 
     print(f'Storing to Dynamo: {item}')
 
-    table.put_item(Item=item)
+    try:
+        table.put_item(Item=item)
+    except Exception as e:
+        print(f"Error writing to DynamoDB: {e}")
+        return {
+            "statusCode": 500,
+            "body": json.dumps({"error": "Failed to save match result", "details": str(e)})
+        }
 
     return {"message": "Match result saved successfully!"}
