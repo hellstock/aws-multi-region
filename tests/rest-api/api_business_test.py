@@ -5,9 +5,6 @@ from api_base import TestApiBase
 
 class TestApiBusinessEndpoints(TestApiBase):
 
-    def setUp(self):
-        super.setUp()
-
     def test_get_results_endpoint(self):
         endpoint = f"{self.base_url}/tournament/12345/results"
         response = requests.get(endpoint)
