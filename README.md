@@ -44,7 +44,7 @@ Above should return the role you were defining.
 ## Deploy stack
 
    cdk bootstrap
-   cdk synth
+   cdk synth --all
    cdk deploy --all --require-approval any-change
 
 ## Iterating
