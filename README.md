@@ -80,11 +80,19 @@ For test running with python unit test framework, prepare this:
 
 ### Running API tests
 
+Run all tests with:
+
+    cd tests/rest-api
+    python -m unittest discover -p "*_test.py"
+
+To run a specific test suite run
+
     cd tests/rest-api
     python3 -m unittest api_test.py
 
 Run only one test case with
 
+    cd tests/rest-api
     python3 -m unittest cognito_test.py -k test_user_sign_up
 
 ## Limitations
