@@ -7,6 +7,7 @@ dynamodb = boto3.resource("dynamodb")
 table_name = os.environ["DYNAMO_TABLE_NAME"]
 table = dynamodb.Table(table_name)
 
+
 def handler(event, context):
 
     print(f'Incoming event: {event}')

@@ -6,6 +6,7 @@ dynamodb = boto3.resource("dynamodb")
 table_name = os.environ["DYNAMO_TABLE_NAME"]
 table = dynamodb.Table(table_name)
 
+
 def handler(event, context):
     tournament_id = event["pathParameters"].get("tournamentId")
 
@@ -18,7 +19,10 @@ def handler(event, context):
     print(f'Got request to get results of tournament: {tournament_id}')
 
     response = table.query(
-        KeyConditionExpression=boto3.dynamodb.conditions.Key("PK").eq(f"TOURNAMENT#{tournament_id}")
+        KeyConditionExpression=(
+            boto3.dynamodb.conditions.Key("PK")
+            .eq(f"TOURNAMENT#{tournament_id}")
+        )
     )
 
     if not response["Items"]:
