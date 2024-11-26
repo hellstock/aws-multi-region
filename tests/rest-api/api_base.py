@@ -1,7 +1,9 @@
 
 import unittest
 import os
+import random
 import boto3
+from datetime import datetime
 
 class TestApiBase(unittest.TestCase):
     __test__ = False
@@ -43,6 +45,11 @@ class TestApiBase(unittest.TestCase):
         except client.exceptions.UserNotConfirmedException:
             print("User is not confirmed")
             raise
+
+    def create_unique_identifier(self):
+        identifier = datetime.now().strftime("%Y%m%d%H%M%S")
+        random_digits = random.randint(100, 999)
+        return f"{identifier}{random_digits}"
 
     def setUp(self):
         self.base_url = os.getenv("HUSH_APIGW_URL")
