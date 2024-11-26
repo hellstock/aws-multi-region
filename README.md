@@ -34,6 +34,8 @@ What is missing:
 * Swagger documentation for the REST API
 * Different environments for DEV, STAGE, PROD
 * Multi-region set-up
+* GitHub actions for automated deployment
+* Instructions for local development of backend
 
 Things that need refactoring
 
