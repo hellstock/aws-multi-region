@@ -1,33 +1,12 @@
+
 import unittest
-import requests
 import os
+import random
 import boto3
+from datetime import datetime
 
-class TestAuhtenticatedApiEndpoint(unittest.TestCase):
-
-    def setUp(self):
-        self.base_url = os.getenv("HUSH_APIGW_URL")
-        if not self.base_url:
-            self.fail("Environment variable 'HUSH_APIGW_URL' is not set.")
-        self.base_url = self.base_url + '/v1'
-
-        self.user_pool = os.getenv("HUSH_USER_POOL_ID")
-        if not self.user_pool:
-            self.fail("Environment variable 'HUSH_USER_POOL_ID' is not set.")
-
-        self.user_pool_client_id = os.getenv("HUSH_USER_POOL_CLIENT_ID")
-        if not self.user_pool_client_id:
-            self.fail("Environment variable 'HUSH_USER_POOL_CLIENT_ID' is not set.")
-
-        self.test_user_username = os.getenv("HUSH_TEST_USER_USERNAME")
-        if not self.test_user_username:
-            self.fail("Environment variable 'HUSH_TEST_USER_USERNAME' is not set.")
-
-        self.test_user_passwd = os.getenv("HUSH_TEST_USER_PASSWD")
-        if not self.test_user_passwd:
-            self.fail("Environment variable 'HUSH_TEST_USER_PASSWD' is not set.")
-
-        self.region = self.user_pool.split('_')[0]
+class TestApiBase(unittest.TestCase):
+    __test__ = False
 
     def authenticate_with_cognito(self):
         client = boto3.client("cognito-idp")
@@ -67,14 +46,35 @@ class TestAuhtenticatedApiEndpoint(unittest.TestCase):
             print("User is not confirmed")
             raise
 
-    def test_get_hello_with_authentication(self):
-        id_token = self.authenticate_with_cognito()
-        headers = {"Authorization": id_token}
-        endpoint = f"{self.base_url}/helloauthenticated"
-        response = requests.get(endpoint, headers=headers)
+    def create_unique_identifier(self):
+        identifier = datetime.now().strftime("%Y%m%d%H%M%S")
+        random_digits = random.randint(100, 999)
+        return f"{identifier}{random_digits}"
 
-        self.assertEqual(response.status_code, 200, f"Expected 200 but got {response.status_code}")
-        print(response.text)
+    def setUp(self):
+        self.base_url = os.getenv("HUSH_APIGW_URL")
+        if not self.base_url:
+            self.fail("Environment variable 'HUSH_APIGW_URL' is not set.")
+        self.base_url = self.base_url + '/v1'
 
-if __name__ == "__main__":
-    unittest.main()
+        self.aws_reqion = os.getenv("HUSH_AWS_REGION")
+        if not self.aws_reqion:
+            self.fail("Environment variable 'HUSH_AWS_REGION' is not set.")
+
+        self.user_pool = os.getenv("HUSH_USER_POOL_ID")
+        if not self.user_pool:
+            self.fail("Environment variable 'HUSH_USER_POOL_ID' is not set.")
+
+        self.user_pool_client_id = os.getenv("HUSH_USER_POOL_CLIENT_ID")
+        if not self.user_pool_client_id:
+            self.fail("Environment variable 'HUSH_USER_POOL_CLIENT_ID' is not set.")
+
+        self.test_user_username = os.getenv("HUSH_TEST_USER_USERNAME")
+        if not self.test_user_username:
+            self.fail("Environment variable 'HUSH_TEST_USER_USERNAME' is not set.")
+
+        self.test_user_passwd = os.getenv("HUSH_TEST_USER_PASSWD")
+        if not self.test_user_passwd:
+            self.fail("Environment variable 'HUSH_TEST_USER_PASSWD' is not set.")
+
+        self.region = self.user_pool.split('_')[0]

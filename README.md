@@ -1,11 +1,55 @@
-# aws-multi-region
+# AWS Multi-region
 
-Hello world demo of multi-region AWS deployment with Python CDK, testing with RobotFW
+## Overview
+
+Hello world demo of multi-region AWS deployment with Python CDK.
+
+Main purpose of this project is to be a personal competence development project. Also this can hopefully serve as future reference to many details related to AWS deployment.
+
+Project does not "do" much really, but there is a REST API that can be used for storing and retrieving table tennis match scores. This is a functional API that can be used for score bookkeeping.
+
+## Design principles
+
+Some design principles in random order:
+
+* **Mono-repo**: All Infrastructure code, backend and test code is the same repository.
+* **Backend**: Everything done with serverless Lambda functions implemented in Python.
+* **Database**: DynamoDB used with "single table design" principle
+* **Infrastructure**: Everything done with Python CDK
+* **Simplicity**: Extra frameworks and dependencies are not added until absolutely needed.
+* **Test driven development**: All backend code is covered by test cases.
+* **Fast experiments**: When in doubt, do implementation one way and then start all over if first approach did not work.
+
+## Current state of the project
+
+What is in place:
+
+* ApiGW, Lambdas, DynamoDB, Cognito, CloudWatch in CDK stacks
+* Cognito authorization for restricted Lambdas
+* Rudimentary backend Lambdas implementation
+* API test suite to test API endpoints
+
+What is missing:
+
+* Swagger documentation for the REST API
+* Different environments for DEV, STAGE, PROD
+* Multi-region set-up
+* GitHub actions for automated deployment
+* Instructions for local development of backend
+* Recommended linter file configurations
+
+Things that need refactoring
+
+* Backend Lambdas need better structure like: Parameter validation, business logic, response handling.
+* CDK Lambda stack is starting to get long in current format, needs re-thinking soon
+* Some test cases need fine tuning so they are more elegant.
+
 
 ## Requirements for environment
 
 Pip needs to be installed
 Python 3 needs to be installed
+Npm needs to be installed
 
 ## Prepare CDK related things
 
@@ -43,13 +87,13 @@ Above should return the role you were defining.
 
 ## Deploy stack
 
-   cdk bootstrap
-   cdk synth
-   cdk deploy --all --require-approval any-change
+    cdk bootstrap
+    cdk synth --all
+    cdk deploy --all
 
 ## Iterating
 
-   cdk diff
+    cdk diff
 
 ## Get endpoints
 
@@ -80,12 +124,20 @@ For test running with python unit test framework, prepare this:
 
 ### Running API tests
 
+Run all tests with:
+
     cd tests/rest-api
-    python3 -m unittest api-test.py
+    python -m unittest discover -p "*_test.py"
+
+To run a specific test suite run
+
+    cd tests/rest-api
+    python3 -m unittest api_test.py
 
 Run only one test case with
 
-    python3 -m unittest cognito-test.py -k test_user_sign_up
+    cd tests/rest-api
+    python3 -m unittest cognito_test.py -k test_user_sign_up
 
 ## Limitations
 
