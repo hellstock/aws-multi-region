@@ -8,6 +8,16 @@ Main purpose of this project is to be a personal competence development project.
 
 Project does not "do" much really, but there is a REST API that can be used for storing and retrieving table tennis match scores. This is a functional API that can be used for score bookkeeping.
 
+Project is named "Hush" so it has some name that can be used as prefix etc. in various places.
+
+## Architecture
+
+Current AWS architecture is displayed in below diagram.
+
+![Hush Architecture](doc/hush_architecture.jpg)
+
+Notice that there is and will not be actual client for the time being. Instead the python test cases act as client and also serve as reference in case real client would be implemented at some point.
+
 ## Design principles
 
 Some design principles in random order:

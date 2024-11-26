@@ -1,5 +1,6 @@
 import os
 
+
 def handler(event, context):
     region = os.environ.get('AWS_REGION', 'Unknown Region')
 

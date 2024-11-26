@@ -1,6 +1,7 @@
 import requests
 from api_base import TestApiBase
 
+
 class TestAuhtenticatedApiEndpoint(TestApiBase):
 
     def test_get_hello_with_authentication(self):
@@ -9,5 +10,7 @@ class TestAuhtenticatedApiEndpoint(TestApiBase):
         endpoint = f"{self.base_url}/helloauthenticated"
         response = requests.get(endpoint, headers=headers)
 
-        self.assertEqual(response.status_code, 200, f"Expected 200 but got {response.status_code}")
+        self.assertEqual(
+            response.status_code, 200,
+            f"Expected 200 but got {response.status_code}")
         print(response.text)
