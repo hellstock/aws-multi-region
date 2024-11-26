@@ -77,3 +77,4 @@ class TestApiBase(unittest.TestCase):
         if not self.test_user_passwd:
             self.fail("Environment variable 'HUSH_TEST_USER_PASSWD' is not set.")
 
+        self.region = self.user_pool.split('_')[0]

@@ -1,31 +1,17 @@
-import unittest
 import os
 import boto3
-from datetime import datetime
+from api_base import TestApiBase
+
 
 # This does not need to be actual working e-mail in our set-up
 BASE_EMAIL = "user@hush.com"
-TEMPORARY_PASSWORD = "SecurePassword123!"
 
-class TestCognito(unittest.TestCase):
+class TestCognito(TestApiBase):
 
-    def setUp(self):
-        self.user_pool = os.getenv("HUSH_USER_POOL_ID")
-        if not self.user_pool:
-            self.fail("Environment variable 'HUSH_USER_POOL_ID' is not set.")
-
-        self.user_pool_client_id = os.getenv("HUSH_USER_POOL_CLIENT_ID")
-        if not self.user_pool_client_id:
-            self.fail("Environment variable 'HUSH_USER_POOL_CLIENT_ID' is not set.")
-
-        self.region = self.user_pool.split('_')[0]
-
-    # The postfix parameter is used to distinguish aliases created on same second when
-    # all test cases are run. Otherwise later cases fail with "user already exists"
-    def create_new_email_alias(self, base_email,postfix=""):
+    def create_new_email_alias(self, base_email):
         local_part, domain = base_email.split("@")
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        unique_email = f"{local_part}+{timestamp}{postfix}@{domain}"
+        timestamp = self.create_unique_identifier()
+        unique_email = f"{local_part}+{timestamp}@{domain}"
         return unique_email
 
     def sign_up_user(self, client, user_pool_client_id, email, password):
@@ -41,7 +27,7 @@ class TestCognito(unittest.TestCase):
         return response
 
     def test_admin_create_user(self):
-        email = self.create_new_email_alias(BASE_EMAIL, "a")
+        email = self.create_new_email_alias(BASE_EMAIL)
         client = boto3.client('cognito-idp', region_name=self.region)
 
         response = client.admin_create_user(
@@ -51,7 +37,7 @@ class TestCognito(unittest.TestCase):
                 {"Name": "email", "Value": email},
                 {"Name": "email_verified", "Value": "true"}
             ],
-            TemporaryPassword=TEMPORARY_PASSWORD,
+            TemporaryPassword=self.test_user_passwd,
             MessageAction="SUPPRESS"
         )
 
@@ -70,8 +56,8 @@ class TestCognito(unittest.TestCase):
 
     def test_user_sign_up(self):
         user_pool_client_id = self.user_pool_client_id
-        email = self.create_new_email_alias(BASE_EMAIL, "s")
-        password = TEMPORARY_PASSWORD
+        email = self.create_new_email_alias(BASE_EMAIL)
+        password = self.test_user_passwd
 
         client = boto3.client("cognito-idp")
 
