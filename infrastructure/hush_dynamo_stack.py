@@ -29,17 +29,17 @@ class HushDynamoDbStack(Stack):
             removal_policy=RemovalPolicy.DESTROY,
         )
 
-        # Add a GSI for performance optimization on additional
+        # For later: Add a GSI for performance optimization on additional
         # access patterns
-        self.table.add_global_secondary_index(
-            index_name="GSI1",
-            partition_key=dynamodb.Attribute(
-                name="GSI1PK",
-                type=dynamodb.AttributeType.STRING,
-            ),
-            sort_key=dynamodb.Attribute(
-                name="GSI1SK",
-                type=dynamodb.AttributeType.STRING,
-            ),
-            projection_type=dynamodb.ProjectionType.ALL,
-        )
+        # self.table.add_global_secondary_index(
+        #     index_name="GSI1",
+        #     partition_key=dynamodb.Attribute(
+        #         name="GSI1PK",
+        #         type=dynamodb.AttributeType.STRING,
+        #     ),
+        #     sort_key=dynamodb.Attribute(
+        #         name="GSI1SK",
+        #         type=dynamodb.AttributeType.STRING,
+        #     ),
+        #     projection_type=dynamodb.ProjectionType.ALL,
+        # )
