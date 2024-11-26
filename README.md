@@ -36,6 +36,7 @@ What is missing:
 * Multi-region set-up
 * GitHub actions for automated deployment
 * Instructions for local development of backend
+* Recommended linter file configurations
 
 Things that need refactoring
 
