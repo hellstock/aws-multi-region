@@ -12,13 +12,13 @@ Project does not "do" much really, but there is a REST API that can be used for 
 
 Some design principles in random order:
 
-* Mono-repo: All Infrastructure code, backend and test code is the same repository.
-* Backend: Everything done with serverless Lambda functions implemented in Python.
-* Database: DynamoDB used with "single table design" principle
-* Infrastrcture: Everything done with Python CDK
-* Simplicity: Extra frameworks and dependencies are not added until absolutely needed.
-* Test driven development: All backend code is covered by test cases.
-* Fast experiments: When in doubt, do implementation one way and then start all over if first approach did not work.
+* **Mono-repo**: All Infrastructure code, backend and test code is the same repository.
+* **Backend**: Everything done with serverless Lambda functions implemented in Python.
+* **Database**: DynamoDB used with "single table design" principle
+* **Infrastructure**: Everything done with Python CDK
+* **Simplicity**: Extra frameworks and dependencies are not added until absolutely needed.
+* **Test driven development**: All backend code is covered by test cases.
+* **Fast experiments**: When in doubt, do implementation one way and then start all over if first approach did not work.
 
 ## Current state of the project
 
