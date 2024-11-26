@@ -43,4 +43,9 @@ def handler(event, context):
             "body": json.dumps({"error": "Failed to save match result", "details": str(e)})
         }
 
-    return {"message": "Match result saved successfully!"}
+    print("All good, returning 200 to client")
+
+    return {
+        "statusCode": 200,
+        "body": "Item saved successfully"
+    }
