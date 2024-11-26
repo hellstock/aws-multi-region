@@ -1,5 +1,6 @@
 import boto3
 import os
+import json
 
 dynamodb = boto3.resource("dynamodb")
 table_name = os.environ["DYNAMO_TABLE_NAME"]
@@ -29,6 +30,21 @@ def handler(event, context):
 
     response_items = response.get("Items", [])
 
-    print(f'Returning to client: {response_items}')
+    print("Results fould from Dynamo, converting to client response")
 
-    return {"results": response_items}
+    cleaned_results = []
+    for item in response_items:
+        cleaned_results.append({
+            "tournament_id": item.get("PK").replace("TOURNAMENT#", ""),
+            "match_id": item.get("SK").replace("MATCH#", ""),
+            "player1": item.get("Player1"),
+            "player2": item.get("Player2"),
+            "score": item.get("Score")
+        })
+
+    print(f'Returning to client: {cleaned_results}')
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps({"results": cleaned_results})
+    }
