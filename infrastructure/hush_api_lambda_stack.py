@@ -92,6 +92,12 @@ class HushApiLambdaStack(Stack):
             authorization_type=apigw.AuthorizationType.COGNITO,
             authorizer=authorizer
         )
+        match_post_resource.add_method(
+            "PUT",
+            apigw.LambdaIntegration(lambda_function_store_match),
+            authorization_type=apigw.AuthorizationType.COGNITO,
+            authorizer=authorizer
+        )
 
         tournament_resource = tournaments_resource.add_resource("{tournamentId}")
         results_resource = tournament_resource.add_resource("results")

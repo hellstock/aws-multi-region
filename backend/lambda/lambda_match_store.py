@@ -12,6 +12,7 @@ def handler(event, context):
     print(f'Incoming event: {event}')
 
     http_method = event.get("httpMethod", "").upper()
+    print(f"HTTP method: {http_method}")
 
     try:
         body = json.loads(event["body"])
@@ -45,8 +46,18 @@ def handler(event, context):
     print(f'Storing to Dynamo: {item}')
 
     try:
-        table.put_item(Item=item,
-        ConditionExpression="attribute_not_exists(PK) AND attribute_not_exists(SK)")
+        if http_method == "PUT":
+            table.put_item(Item=item)
+        elif http_method == "POST":
+            table.put_item(Item=item,
+            ConditionExpression="attribute_not_exists(PK) AND attribute_not_exists(SK)")
+        else:
+            # Should not be possible to come here unless Stack is wrongly configured,
+            # but let's handle it anyway to be on the safe side.
+            return {
+                "statusCode": 405,
+                "body": json.dumps({"error": f"HTTP method {http_method} not allowed"})
+            }
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == 'ConditionalCheckFailedException':
             print('Item already exist, returning 409 to client')
