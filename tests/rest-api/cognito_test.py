@@ -1,4 +1,3 @@
-import os
 import boto3
 from api_base import TestApiBase
 

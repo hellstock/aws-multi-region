@@ -1,4 +1,3 @@
-import unittest
 import requests
 from api_base import TestApiBase
 
@@ -12,6 +11,3 @@ class TestAuhtenticatedApiEndpoint(TestApiBase):
 
         self.assertEqual(response.status_code, 200, f"Expected 200 but got {response.status_code}")
         print(response.text)
-
-if __name__ == "__main__":
-    unittest.main()

@@ -1,6 +1,5 @@
 import unittest
 import requests
-import os
 from api_base import TestApiBase
 
 class TestApiEndpoint(TestApiBase):
