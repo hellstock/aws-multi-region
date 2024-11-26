@@ -43,13 +43,13 @@ Above should return the role you were defining.
 
 ## Deploy stack
 
-   cdk bootstrap
-   cdk synth --all
-   cdk deploy --all --require-approval any-change
+    cdk bootstrap
+    cdk synth --all
+    cdk deploy --all
 
 ## Iterating
 
-   cdk diff
+    cdk diff
 
 ## Get endpoints
 
